@@ -47,8 +47,13 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode
 }>) {
+  const setInitialTheme = `try{(function(){const t=localStorage.getItem('theme');const prefersDark=window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches; if(t==='dark' || (!t && prefersDark)){document.documentElement.classList.add('dark');document.documentElement.style.colorScheme='dark';} else {document.documentElement.classList.remove('dark');document.documentElement.style.colorScheme='light';}})()}catch(e){}`
+
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
+      <head>
+        <script dangerouslySetInnerHTML={{ __html: setInitialTheme }} />
+      </head>
       <body className="font-sans antialiased">
         <ThemeProvider>
           {children}
