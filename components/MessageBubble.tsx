@@ -1,0 +1,57 @@
+'use client';
+
+import { motion } from 'framer-motion';
+import { format } from 'date-fns';
+
+interface MessageBubbleProps {
+  message: string;
+  isUser: boolean;
+  timestamp?: Date;
+}
+
+export default function MessageBubble({
+  message,
+  isUser,
+  timestamp,
+}: MessageBubbleProps) {
+  const messageVariants = {
+    hidden: {
+      opacity: 0,
+      y: 20,
+      x: isUser ? 20 : -20,
+    },
+    visible: {
+      opacity: 1,
+      y: 0,
+      x: 0,
+      transition: {
+        duration: 0.4,
+        ease: 'easeOut',
+      },
+    },
+  };
+
+  return (
+    <motion.div
+      className={`flex ${isUser ? 'justify-end' : 'justify-start'} mb-4`}
+      variants={messageVariants}
+      initial="hidden"
+      animate="visible"
+    >
+      <div
+        className={`max-w-xs lg:max-w-md rounded-lg px-4 py-3 ${
+          isUser
+            ? 'bg-primary text-primary-foreground rounded-br-none'
+            : 'bg-muted text-muted-foreground rounded-bl-none'
+        }`}
+      >
+        <p className="text-sm leading-relaxed break-words">{message}</p>
+        {timestamp && (
+          <p className={`text-xs mt-1 ${isUser ? 'opacity-70' : 'opacity-60'}`}>
+            {format(timestamp, 'HH:mm')}
+          </p>
+        )}
+      </div>
+    </motion.div>
+  );
+}
