@@ -7,6 +7,7 @@ import { Input } from '@/components/ui/input';
 import { Send, RotateCcw } from 'lucide-react';
 import MessageBubble from './MessageBubble';
 import TypingIndicator from './TypingIndicator';
+import ThemeToggle from './ThemeToggle';
 
 interface Message {
   id: string;
@@ -107,15 +108,18 @@ export default function ChatBox() {
             <h1 className="text-2xl font-bold text-foreground">Health Support AI</h1>
             <p className="text-sm text-muted-foreground">Your friendly health assistant</p>
           </div>
-          <motion.button
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-            onClick={clearChat}
-            className="p-2 hover:bg-muted rounded-lg transition-colors"
-            title="Clear chat"
-          >
-            <RotateCcw className="w-5 h-5" />
-          </motion.button>
+          <div className="flex items-center gap-2">
+            <ThemeToggle />
+            <motion.button
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+              onClick={clearChat}
+              className="p-2 hover:bg-muted rounded-lg transition-colors"
+              title="Clear chat"
+            >
+              <RotateCcw className="w-5 h-5" />
+            </motion.button>
+          </div>
         </div>
       </nav>
 
