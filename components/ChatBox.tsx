@@ -49,6 +49,10 @@ export default function ChatBox() {
     setInput('');
     setLoading(true);
 
+    const controller = new AbortController();
+    const timeoutMs = 15000; // 15s timeout, adjust as needed
+    const timeoutId = window.setTimeout(() => controller.abort(), timeoutMs);
+
     try {
       const response = await fetch(`${API_URL}/chat`, {
         method: 'POST',
@@ -56,7 +60,10 @@ export default function ChatBox() {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({ message: input }),
+        signal: controller.signal,
       });
+
+      clearTimeout(timeoutId);
 
       if (!response.ok) {
         throw new Error(`API error: ${response.status}`);
@@ -71,11 +78,15 @@ export default function ChatBox() {
       };
 
       setMessages((prev) => [...prev, aiMessage]);
-    } catch (error) {
-      console.error('Error sending message:', error);
+    } catch (err: any) {
+      clearTimeout(timeoutId);
+      console.error('Error sending message:', err);
+      const isTimeout = err?.name === 'AbortError';
       const errorMessage: Message = {
         id: (Date.now() + 2).toString(),
-        text: 'Sorry, I encountered an error. Please try again.',
+        text: isTimeout
+          ? 'Server is taking too long to respond. Please try again.'
+          : 'Sorry, I encountered an error. Please try again.',
         isUser: false,
         timestamp: new Date(),
       };
