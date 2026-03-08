@@ -21,6 +21,8 @@ const API_URL =  'https://healthcare-backend-nec1.onrender.com';
 export default function ChatBox() {
   const [messages, setMessages] = useState<Message[]>([]);
   const [input, setInput] = useState('');
+  const [userName, setUserName] = useState('');
+  const [nameInput, setNameInput] = useState('');
   const [loading, setLoading] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
@@ -32,6 +34,15 @@ export default function ChatBox() {
   useEffect(() => {
     scrollToBottom();
   }, [messages, loading]);
+
+  useEffect(() => {
+    try {
+      const stored = localStorage.getItem('hc_username');
+      if (stored) setUserName(stored);
+    } catch (e) {
+      // ignore
+    }
+  }, []);
 
   const sendMessage = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -70,9 +81,15 @@ export default function ChatBox() {
       }
 
       const data = await response.json();
+      // personalize any backend greeting that mentions "Avijit"
+      const rawText: string = data.response || '';
+      const personalized = userName
+        ? rawText.replace(/avijit/gi, userName)
+        : rawText.replace(/avijit/gi, '');
+
       const aiMessage: Message = {
         id: (Date.now() + 1).toString(),
-        text: data.response,
+        text: personalized,
         isUser: false,
         timestamp: new Date(),
       };
@@ -148,10 +165,43 @@ export default function ChatBox() {
                 <div className="w-16 h-16 rounded-full bg-primary/10 flex items-center justify-center mx-auto mb-4">
                   <span className="text-3xl">💬</span>
                 </div>
-                <h2 className="text-2xl font-bold mb-2">Welcome!</h2>
-                <p className="text-muted-foreground max-w-sm">
-                  Start a conversation about your health and wellness. I'm here to provide helpful guidance.
-                </p>
+                {userName ? (
+                  <>
+                    <h2 className="text-2xl font-bold mb-2">Welcome, {userName}!</h2>
+                    <p className="text-muted-foreground max-w-sm">
+                      Start a conversation about your health and wellness. I'm here to provide helpful guidance.
+                    </p>
+                  </>
+                ) : (
+                  <div className="space-y-3">
+                    <h2 className="text-2xl font-bold mb-2">Welcome!</h2>
+                    <p className="text-muted-foreground max-w-sm">
+                      Enter your name so I can personalize responses for you.
+                    </p>
+                    <div className="flex items-center gap-2 justify-center">
+                      <input
+                        value={nameInput}
+                        onChange={(e) => setNameInput(e.target.value)}
+                        placeholder="Your name"
+                        className="px-3 py-2 rounded-md border"
+                      />
+                      <button
+                        onClick={() => {
+                          const trimmed = nameInput.trim();
+                          if (!trimmed) return;
+                          try {
+                            localStorage.setItem('hc_username', trimmed);
+                          } catch (e) {}
+                          setUserName(trimmed);
+                          setNameInput('');
+                        }}
+                        className="px-3 py-2 bg-primary text-primary-foreground rounded-md"
+                      >
+                        Save
+                      </button>
+                    </div>
+                  </div>
+                )}
               </div>
             </motion.div>
           ) : (
