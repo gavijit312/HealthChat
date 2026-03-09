@@ -65,7 +65,7 @@ export default function MessageBubble({
             : 'bg-muted text-muted-foreground rounded-bl-none'
         }`}
       >
-        <p className="text-sm leading-relaxed break-words">{message}</p>
+        <p className="text-sm leading-relaxed wrap-break-word">{message}</p>
         {timestamp && (
           <p className={`text-xs mt-1 ${isUser ? 'opacity-70' : 'opacity-60'}`}>
             {format(timestamp, 'HH:mm')}

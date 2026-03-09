@@ -128,7 +128,7 @@ export default function ChatBox() {
   };
 
   return (
-    <div className="flex flex-col h-screen bg-gradient-to-br from-background via-background to-muted/30">
+    <div className="flex flex-col h-screen bg-linear-to-br from-background via-background to-muted/30">
       {/* Navbar */}
       <nav className="border-b border-border/40 bg-background/80 backdrop-blur-sm sticky top-0 z-40">
         <div className="max-w-2xl mx-auto px-4 sm:px-6 py-4 flex items-center justify-between">
