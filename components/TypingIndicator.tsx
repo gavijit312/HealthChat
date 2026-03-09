@@ -21,16 +21,16 @@ export default function TypingIndicator() {
 
   return (
     <motion.div
-      className="flex items-center gap-2"
+      className="flex items-center gap-3"
       variants={containerVariants}
       initial="hidden"
       animate="visible"
     >
-      <span className="text-sm text-muted-foreground">AI is typing</span>
+      <span className="text-sm text-primary-foreground italic">AI is typing</span>
       {[0, 1, 2].map((index) => (
         <motion.div
           key={index}
-          className="w-2 h-2 bg-primary rounded-full"
+          className="w-2.5 h-2.5 bg-primary/80 rounded-full"
           variants={dotVariants}
           animate="visible"
           transition={{

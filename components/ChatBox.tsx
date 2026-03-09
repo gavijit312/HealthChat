@@ -218,13 +218,16 @@ export default function ChatBox() {
           )}
 
           {loading && (
-            <motion.div
-              className="mb-4"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-            >
-              <TypingIndicator />
-            </motion.div>
+            <>
+              <MessageBubble key="placeholder" message="" isUser={false} isPlaceholder />
+              <motion.div
+                className="mb-4"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+              >
+                <TypingIndicator />
+              </motion.div>
+            </>
           )}
 
           <div ref={messagesEndRef} />
