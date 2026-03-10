@@ -23,6 +23,7 @@ export default function ChatBox() {
   const [input, setInput] = useState('');
   const [userName, setUserName] = useState('');
   const [nameInput, setNameInput] = useState('');
+  const [showWelcome, setShowWelcome] = useState(false);
   const [loading, setLoading] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
@@ -43,6 +44,13 @@ export default function ChatBox() {
       // ignore
     }
   }, []);
+
+  useEffect(() => {
+    if (!userName) return;
+    setShowWelcome(true);
+    const id = window.setTimeout(() => setShowWelcome(false), 4000);
+    return () => clearTimeout(id);
+  }, [userName]);
 
   const sendMessage = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -150,6 +158,22 @@ export default function ChatBox() {
           </div>
         </div>
       </nav>
+
+      <AnimatePresence>
+        {showWelcome && (
+          <motion.div
+            initial={{ opacity: 0, y: -10 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -10 }}
+            transition={{ duration: 0.3 }}
+            className="max-w-2xl mx-auto px-4 sm:px-6 py-2"
+          >
+            <div className="rounded-md bg-primary/10 border border-primary/20 px-4 py-2 text-sm text-primary-foreground text-center">
+              Welcome back, {userName}!
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
 
       {/* Chat Container */}
       <div className="flex-1 overflow-y-auto">
