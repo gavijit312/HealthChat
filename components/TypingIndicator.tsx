@@ -26,7 +26,7 @@ export default function TypingIndicator() {
       initial="hidden"
       animate="visible"
     >
-      <span className="text-sm text-primary-foreground italic">AI is typing</span>
+      <span className="text-sm uppercase tracking-wide font-semibold text-primary-foreground bg-primary/10 px-3 py-1 rounded-full shadow-sm">AI IS TYPING</span>
       {[0, 1, 2].map((index) => (
         <motion.div
           key={index}
