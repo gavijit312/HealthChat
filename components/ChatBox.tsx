@@ -15,7 +15,6 @@ interface Message {
   isUser: boolean;
   timestamp: Date;
 }
-
 const API_URL =  'https://healthcare-backend-nec1.onrender.com';
 
 export default function ChatBox() {
