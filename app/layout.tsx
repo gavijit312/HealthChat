@@ -54,11 +54,13 @@ export default function RootLayout({
       <head>
         <script dangerouslySetInnerHTML={{ __html: setInitialTheme }} />
       </head>
-      <body className="font-sans antialiased">
-        <ThemeProvider>
-          {children}
-          <Analytics />
-        </ThemeProvider>
+      <body className={`${_geist.className} font-sans antialiased`}>
+        <div className="app-shell">
+          <ThemeProvider>
+            {children}
+            <Analytics />
+          </ThemeProvider>
+        </div>
       </body>
     </html>
   )

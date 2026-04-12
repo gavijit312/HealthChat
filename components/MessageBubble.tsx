@@ -41,10 +41,13 @@ export default function MessageBubble({
         initial="hidden"
         animate="visible"
       >
-        <div className={`max-w-xs lg:max-w-md rounded-lg px-4 py-3 bg-muted/30 border-l-4 border-primary/30`}>
-          <div className="space-y-2">
-            <div className="h-3 bg-muted/60 rounded w-3/4 animate-pulse" />
-            <div className="h-3 bg-muted/60 rounded w-1/2 animate-pulse" />
+        <div className={`flex items-end gap-3 ${isUser ? 'flex-row-reverse' : 'flex-row'}`}>
+          <div className="message-avatar bg-muted/20 text-muted-foreground">{isUser ? '🙂' : '🩺'}</div>
+          <div className={`max-w-xs lg:max-w-md rounded-lg px-4 py-3 bg-muted/30 border-l-4 border-primary/30 message-bubble`}>
+            <div className="space-y-2">
+              <div className="h-3 bg-muted/60 rounded w-3/4 animate-pulse" />
+              <div className="h-3 bg-muted/60 rounded w-1/2 animate-pulse" />
+            </div>
           </div>
         </div>
       </motion.div>
@@ -58,19 +61,24 @@ export default function MessageBubble({
       initial="hidden"
       animate="visible"
     >
-      <div
-        className={`max-w-xs lg:max-w-md rounded-lg px-4 py-3 ${
-          isUser
-            ? 'bg-primary text-primary-foreground rounded-br-none'
-            : 'bg-muted text-muted-foreground rounded-bl-none'
-        }`}
-      >
-        <p className="text-sm leading-relaxed wrap-break-word">{message}</p>
-        {timestamp && (
-          <p className={`text-xs mt-1 ${isUser ? 'opacity-70' : 'opacity-60'}`}>
-            {format(timestamp, 'HH:mm')}
-          </p>
-        )}
+      <div className={`flex items-end gap-3 ${isUser ? 'flex-row-reverse' : 'flex-row'}`}>
+        <div className={`message-avatar ${isUser ? 'bg-primary text-primary-foreground' : 'bg-muted/10 text-muted-foreground'}`}>
+          {isUser ? '🙂' : '🩺'}
+        </div>
+        <div
+          className={`max-w-xs lg:max-w-md rounded-lg px-4 py-3 message-bubble ${
+            isUser
+              ? 'bg-primary text-primary-foreground rounded-br-none'
+              : 'bg-muted text-muted-foreground rounded-bl-none'
+          }`}
+        >
+          <p className="text-sm leading-relaxed break-words">{message}</p>
+          {timestamp && (
+            <p className={`text-xs mt-1 ${isUser ? 'opacity-70' : 'opacity-60'}`}>
+              {format(timestamp, 'HH:mm')}
+            </p>
+          )}
+        </div>
       </div>
     </motion.div>
   );
